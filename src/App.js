@@ -52,7 +52,7 @@ class PlaylistCounter extends Component{
   render(){
     return (
       <div className="aggregate" style={{...defaultStyle, width: '150px', display:'inline-block'}}>
-        <h2>{this.props.playlists && this.props.playlists.length} playlists</h2>
+        <h2>{this.props.playlists.length} playlists</h2>
       </div>
     );
   }
@@ -91,7 +91,7 @@ class Playlist extends Component {
     return (
       <div style={{...defaultStyle, width:'20%', display: 'inline-block'}}>
         <img/>
-        <h3>Playlist Name</h3>
+        <h3>{this.props.playlist.name}</h3>
         <ul>
           <li>Artist 1</li>
           <li>Artist 2</li>
@@ -139,10 +139,12 @@ class App extends Component {
             <PlaylistCounter playlists={this.state.serverData.user.playlists}/>
             <HoursCounter playlists={this.state.serverData.user.playlists}/>
             <Filter/>
-            <Playlist/>
-            <Playlist/>
-            <Playlist/>
-            <Playlist/>
+            {
+              this.state.serverData.user.playlists.map(playlists =>
+                <Playlist playlist={playlists}/>
+              )
+            }
+
           </div> : <h1>Loading...</h1>
         }
       </div>
