@@ -88,14 +88,18 @@ class Filter extends Component{
 
 class Playlist extends Component {
   render(){
+    let playlist = this.props.playlist;
+    let songs = playlist.songs.slice(0,3);
     return (
       <div style={{...defaultStyle, width:'20%', display: 'inline-block'}}>
         <img/>
-        <h3>{this.props.playlist.name}</h3>
-        <ul>
-          <li>Artist 1</li>
-          <li>Artist 2</li>
-          <li>Artist 3</li>
+        <h3>{playlist.name}</h3>
+        <ul style={{listStyle: 'none', padding: 0}}>
+          {
+            songs.map(song =>
+              <li>{song.name}</li>
+            )
+          }
         </ul>
       </div>
     );
