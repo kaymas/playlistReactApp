@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 
 let defaultStyle = {
@@ -78,9 +78,11 @@ class HoursCounter extends Component{
 class Filter extends Component{
   render(){
     return (
-      <div style={defaultStyle}>
-        <img src="" style={{width: "1.6rem",height:"1.6rem"}}/>
-        <input type="text"/>
+      <div style={{...defaultStyle, marginBottom: '40px'}}>
+        <img alt="search-icon"/>
+        <input type="text" onKeyUp={
+          event => this.props.onTextChange(event.target.value)
+        }/>
       </div>
     );
   }
@@ -92,7 +94,7 @@ class Playlist extends Component {
     let songs = playlist.songs.slice(0,3);
     return (
       <div style={{...defaultStyle, width:'20%', display: 'inline-block'}}>
-        <img/>
+        <img alt="playlist-art"/>
         <h3>{playlist.name}</h3>
         <ul style={{listStyle: 'none', padding: 0}}>
           {
@@ -111,7 +113,8 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      serverData : {}
+      serverData : {},
+      filterString: ''
     };
   }
 
@@ -142,10 +145,14 @@ class App extends Component {
             </h1>
             <PlaylistCounter playlists={this.state.serverData.user.playlists}/>
             <HoursCounter playlists={this.state.serverData.user.playlists}/>
-            <Filter/>
+            <Filter onTextChange={text => this.setState({filterString: text})}/>
             {
-              this.state.serverData.user.playlists.map(playlists =>
-                <Playlist playlist={playlists}/>
+              this.state.serverData.user.playlists.filter(
+                playlists => playlists.name.toLowerCase().includes(
+                  this.state.filterString.toLowerCase()
+                )
+              ).map(
+                playlists => <Playlist playlist={playlists}/>
               )
             }
 
